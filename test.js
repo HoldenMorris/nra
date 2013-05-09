@@ -1,3 +1,7 @@
+/**
+ * To run the test run 'Mocha' from the command line
+ */
+
 var nra    = require('./nra.js'),
     sha1   = require('sha1'),
     assert = require('assert');
@@ -17,8 +21,5 @@ describe('node-rest-auth', function () {
       });
 
   });
-
-
-
 
 });
