@@ -1,9 +1,21 @@
+/**
+ * Used to test if the user, salt and hash are valid.
+ * @author holdenm@synaq.com
+ * @version 0.0.1
+ */
+
 (function () {
 
   var redis = require("redis"),
       sha1  = require('sha1');
 
-  // Auth function
+    /**
+     * Auth function
+     * @param user
+     * @param salt
+     * @param hash
+     * @param callback
+     */
   exports.auth = function (user, salt, hash, callback) {
 
     // Init
@@ -16,27 +28,20 @@
       console.log('Error: '+err)
     });
 
-    // Load User
+    // Load User from Redis and Test
     rc.hgetall(user_id, function (err, data) {
-      console.log(data);
       if( !err && data ){
-
-        //rc.hset(user_id, "key", "1234567");
-        //rc.hdel(user_id,'hashtest 1');
-
         rc.hset(user_id, "salt", salt);
 
         // Test if salt is valid
-        if (salt <= data.salt) err='Invalid Salt';
+        if (salt <= data.salt) err = new Error('Invalid Salt');
 
         // Test if hash is valid
         var test_hash = sha1(user + data.key + salt);
-
-        console.log('Test B: ' + test_hash);
         msg = (test_hash == hash);
 
       } else {
-        err = 'Invalid User'
+        err = new Error('Invalid User');
       }
       rc.quit();
       callback(err,msg);

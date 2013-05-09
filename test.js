@@ -4,12 +4,21 @@ var nra    = require('./nra.js'),
 
 describe('node-rest-auth', function () {
 
-  it ('it should validate that the: user + salt + api-key are valid', function () {
+  it ('it should validate that the: user + salt + api-key are valid', function (done) {
 
-    var hash = 'bf1d9b9fd99a17d71cdea7a00d1bab5e8f97440c';
+      user = 'Reseller One',
+      key = '1234567',
+      salt = new Date().getTime(),
+      hash = sha1(user + key + salt);
 
-    assert.equal( true, nra(hash) );
+      nra.auth(user,salt,hash, function(err, result) {
+          if (err) throw err;
+          done();
+      });
 
   });
+
+
+
 
 });
