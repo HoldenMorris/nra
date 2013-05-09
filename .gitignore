@@ -1,3 +1,16 @@
+# Symfony
+app.yml
+/cache/*
+*.cache
+/log/*
+*.log
+*.bak
+web/charts/cache/*
+config/databases.yml
+config/*.xml
+cron/normalise_config.inc.php
+#Node
+node_modules/*
 lib-cov
 *.seed
 *.log
@@ -6,9 +19,27 @@ lib-cov
 *.out
 *.pid
 *.gz
-
 pids
 logs
 results
-
 npm-debug.log
+#SVN
+.svn
+# VIM
+.*.swo
+.*.swp
+*.*~
+# NetBeans
+nbproject
+# CVS
+CVS
+.cvsignore
+# TextMate
+.#*
+# PHP Storm, other java IDE's
+.idea
+# OS X
+.DS_Store
+._*
+# Windows
+Thumbs.db
