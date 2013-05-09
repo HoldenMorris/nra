@@ -6,8 +6,8 @@
 
 (function () {
 
-  var redis = require("redis"),
-      sha1  = require('sha1');
+    var redis = require("redis"),
+        sha1  = require('sha1');
 
     /**
      * Auth function
@@ -16,37 +16,45 @@
      * @param hash
      * @param callback
      */
-  exports.auth = function (user, salt, hash, callback) {
+    exports.auth = function (user, salt, hash, callback) {
 
-    // Init
-    var err     = null,
-        msg     = null,
-        rc      = redis.createClient(),
-        user_id = sha1(user);
+        // Init
+        var err     = null,
+            msg     = null,
+            rc      = redis.createClient(),
+            user_id = sha1(user);
 
-    rc.on("error", function (err) {
-      console.log('Error: '+err)
-    });
+        rc.on("error", function (err) {
+          console.log('Error: '+err)
+        });
 
-    // Load User from Redis and Test
-    rc.hgetall(user_id, function (err, data) {
-      if( !err && data ){
-        rc.hset(user_id, "salt", salt);
+        // Load User from Redis and Test
+        rc.HGETALL(user_id, function (err, data) {
 
-        // Test if salt is valid
-        if (salt <= data.salt) err = new Error('Invalid Salt');
+            if( !err && data ){
 
-        // Test if hash is valid
-        var test_hash = sha1(user + data.key + salt);
-        msg = (test_hash == hash);
+                rc.HSET(user_id, "salt", salt);
 
-      } else {
-        err = new Error('Invalid User');
-      }
-      rc.quit();
-      callback(err,msg);
-    });
+                // Test if salt is valid
+                if (salt <= data.salt) err = new Error('Invalid Salt');
 
-  };
+                // Test if hash is valid
+                var test_hash = sha1(user + data.key + salt);
+                msg = (test_hash == hash);
+
+            } else {
+
+                // Could not find a valid user
+                err = new Error('Invalid User');
+
+            }
+
+            // Clean up and return callback
+            rc.quit();
+            callback(err,msg);
+
+        });
+
+    };
 
 })();
