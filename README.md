@@ -1,8 +1,11 @@
 NRA
 ===
 
-
 'Node-Rest-Auth' authenticates rest type http api requests using a username, nonce salt and a hash.
+
+[![Build Status](https://secure.travis-ci.org/HoldenMorris/nra.png)](http://travis-ci.org/HoldenMorris/nra)
+
+[![NPM](https://nodei.co/npm/nra.png)](https://nodei.co/npm/nra/)
 
 Warning
 -------
